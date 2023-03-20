@@ -1,16 +1,65 @@
-export const App = () => {
-  return (
+import { Component } from "react";
+import  FeedbackList  from "./FeedbackList/FeedbackList";
+import Section from "./Section/Section";
+import Statistics from "./Statistics";
+import Notification from "./Notification";
+
+ class App extends Component  {
+  state = {
+    good: 0,
+    neutral: 0,
+    bad: 0,
+    }
+    onLeaveFeedback = el => {
+    this.setState(prevstate => ({
+      [el]: prevstate[el] + 1,
+    }));
+  };
+   countTotalFeedback() {
+    return this.state.good + this.state.neutral + this.state.bad;
+  }
+  countPositiveFeedbackPercentage() {
+    return Math.round((this.state.good * 100) / this.countTotalFeedback());
+  }
+
+  render() {
+    return(
     <div
       style={{
         height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+          alignItems: 'flex-start',
+          fontSize: 40,
+          color: '#010101',
+          marginLeft: 30,
       }}
     >
-      React homework template
+        <Section title="Please leave feedback">
+          <FeedbackList options={this.state}
+            onLeaveFeedback={this.onLeaveFeedback}></FeedbackList>
+        </Section>
+        
+        <Section title="Statistics">
+          {this.countTotalFeedback() > 0 ? (
+            <Statistics
+              good={this.state.good}
+              neutral={this.state.neutral}
+              bad={this.state.bad}
+              total={this.countTotalFeedback()}
+              positivePercentage={this.countPositiveFeedbackPercentage()}
+            ></Statistics>
+          ) : (
+            <Notification message="There is no feedback"></Notification>
+          )}
+        </Section>
     </div>
   );
+  }
+  
+  
 };
+
+
+export default App;
