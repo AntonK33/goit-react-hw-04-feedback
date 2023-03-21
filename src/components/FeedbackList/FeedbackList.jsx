@@ -1,30 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import css from './FeedbackList.module.css'
+import css from './FeedbackList.module.css';
 
-
- const FeedbackList = ({ options, onLeaveFeedback}) => {
-    
-     return Object.keys(options).map(el => {
-    return (
+const FeedbackList = ({ options, onLeaveFeedback }) => {
+  return (
+    <div>
+      {options.map(el => (
         <button
-        className={css.button_style}
-        type="button"
-        onClick={() => {
-        onLeaveFeedback(el);
-        }}
-        key={el}
-      >
-        {el}
-      </button>
-    );
-  });
-
-}
+          className={css.button_style}
+          type="button"
+          onClick={onLeaveFeedback}
+          name={el}
+          key={el}
+        >
+          {el}
+        </button>
+      ))}
+    </div>
+  );
+};
 
 export default FeedbackList;
 
 FeedbackList.propTypes = {
-  options: PropTypes.object.isRequired,
+  options: PropTypes.arrayOf(PropTypes.string.isRequired),
   onLeaveFeedback: PropTypes.func.isRequired,
 };
